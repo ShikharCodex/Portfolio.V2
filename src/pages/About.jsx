@@ -72,7 +72,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="section-pad bg-[color:var(--surface)]">
+      <section className="section-pad surface-band">
         <div className="container-xl">
           <SectionHeader
             eyebrow="How I think"

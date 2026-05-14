@@ -4,7 +4,7 @@ import MagneticButton from "../components/MagneticButton";
 import Reveal from "../components/Reveal";
 import SectionHeader from "../components/SectionHeader";
 import Seo from "../components/Seo";
-import { services } from "../data/portfolio";
+import { profile, services } from "../data/portfolio";
 
 const process = [
   "Clarify the product outcome and constraints",
@@ -53,7 +53,7 @@ export default function Services() {
         </div>
       </section>
 
-      <section className="section-pad bg-[color:var(--surface)]">
+      <section className="section-pad surface-band">
         <div className="container-xl grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
           <SectionHeader
             eyebrow="Process"
@@ -81,7 +81,7 @@ export default function Services() {
               <p className="mb-3 text-sm font-semibold uppercase text-[color:var(--accent)]">Collaboration</p>
               <h2 className="text-3xl font-semibold md:text-5xl">Need a product that looks senior and behaves like one?</h2>
             </div>
-            <MagneticButton to="/contact">Book the first conversation</MagneticButton>
+            <MagneticButton href={`mailto:${profile.email}`}>Email the brief</MagneticButton>
           </div>
         </Reveal>
       </section>

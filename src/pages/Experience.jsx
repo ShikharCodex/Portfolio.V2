@@ -21,7 +21,7 @@ export default function Experience() {
         </div>
       </section>
 
-      <section className="section-pad bg-[color:var(--surface)]">
+      <section className="section-pad surface-band">
         <div className="container-xl grid gap-8 lg:grid-cols-2">
           <div>
             <SectionHeader eyebrow="Achievements" title="Proof of momentum." />

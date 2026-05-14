@@ -1,16 +1,53 @@
-# React + Vite
+# Shikhar Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Professional React portfolio for a full-stack product engineer. The site uses Vite, React Router, Tailwind CSS, Framer Motion, GSAP, Lenis, and a lightweight animated interface system.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Multi-page portfolio: home, about, projects, case studies, skills, experience, services, resume, articles, and not found.
+- Responsive visual system with light and dark themes.
+- Native-friendly cursor aura that keeps normal pointer and text-input behavior.
+- Animated hero command center, scroll reveals, project visuals, route transitions, and smooth scrolling.
+- SEO component per page.
+- Social-first connection flow using GitHub, LinkedIn, X, and email links.
+- Vercel and Netlify SPA routing config included.
 
-## React Compiler
+## Local Development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev
+```
 
-## Expanding the ESLint configuration
+Open the URL printed by Vite, usually `http://localhost:5173`.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Quality Checks
+
+```bash
+npm run lint
+npm run build
+```
+
+Use `npm.cmd` instead of `npm` on Windows if PowerShell blocks the npm script shim.
+
+## Deploy To Vercel
+
+1. Push this repository to GitHub.
+2. Import the repository in Vercel.
+3. Use the default Vite settings:
+   - Build command: `npm run build`
+   - Output directory: `dist`
+4. Deploy.
+
+The included `vercel.json` rewrites all routes to `index.html`, so direct project and page URLs work.
+
+## Deploy To Netlify
+
+1. Push this repository to GitHub.
+2. Create a new Netlify site from the repository.
+3. Use:
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+4. Deploy.
+
+The included `netlify.toml` and `public/_redirects` handle React Router fallback routing.

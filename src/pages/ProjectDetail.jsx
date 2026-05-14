@@ -5,7 +5,7 @@ import ProjectVisual from "../components/ProjectVisual";
 import Reveal from "../components/Reveal";
 import SectionHeader from "../components/SectionHeader";
 import Seo from "../components/Seo";
-import { projects } from "../data/portfolio";
+import { profile, projects } from "../data/portfolio";
 
 export default function ProjectDetail() {
   const { slug } = useParams();
@@ -65,7 +65,7 @@ export default function ProjectDetail() {
         </div>
       </section>
 
-      <section className="section-pad bg-[color:var(--surface)]">
+      <section className="section-pad surface-band">
         <div className="container-xl grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
           <SectionHeader
             eyebrow="Problem"
@@ -106,7 +106,7 @@ export default function ProjectDetail() {
         </div>
       </section>
 
-      <section className="section-pad bg-[color:var(--surface)]">
+      <section className="section-pad surface-band">
         <div className="container-xl">
           <div className="grid gap-8 lg:grid-cols-[1fr_0.8fr] lg:items-center">
             <SectionHeader
@@ -126,12 +126,12 @@ export default function ProjectDetail() {
                 >
                   View live product <ExternalLink size={16} />
                 </a>
-                <Link
-                  to="/contact"
+                <a
+                  href={`mailto:${profile.email}?subject=${encodeURIComponent(`Build like ${project.name}`)}`}
                   className="flex items-center justify-between rounded-lg border border-[color:var(--line)] p-4 text-sm font-semibold transition hover:border-[color:var(--accent)]"
                 >
                   Discuss a similar build <ExternalLink size={16} />
-                </Link>
+                </a>
               </div>
             </Reveal>
           </div>

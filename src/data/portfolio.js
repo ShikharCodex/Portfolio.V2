@@ -20,11 +20,19 @@ export const profile = {
 };
 
 export const navLinks = [
+  { label: "About", path: "/about" },
   { label: "Work", path: "/projects" },
   { label: "Skills", path: "/skills" },
   { label: "Journey", path: "/experience" },
   { label: "Services", path: "/services" },
-  { label: "Contact", path: "/contact" },
+  { label: "Resume", path: "/resume" },
+];
+
+export const socialLinks = [
+  { label: "GitHub", href: profile.github, type: "github" },
+  { label: "LinkedIn", href: profile.linkedin, type: "linkedin" },
+  { label: "X", href: profile.twitter, type: "twitter" },
+  { label: "Email", href: `mailto:${profile.email}`, type: "email" },
 ];
 
 export const stats = [
@@ -276,7 +284,6 @@ export const stack = [
   "Cloudinary",
   "Vite",
   "Git",
-  "Zod",
 ];
 
 export const experience = [

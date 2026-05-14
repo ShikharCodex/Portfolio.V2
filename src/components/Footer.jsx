@@ -1,15 +1,11 @@
 import { Github, Linkedin, Mail, MapPin, Terminal, Twitter } from "lucide-react";
+import { createElement } from "react";
 import { Link } from "react-router-dom";
-import { navLinks, profile } from "../data/portfolio";
+import { navLinks, profile, socialLinks } from "../data/portfolio";
 
 export default function Footer() {
   const year = new Date().getFullYear();
-  const socials = [
-    { label: "GitHub", href: profile.github, Icon: Github },
-    { label: "LinkedIn", href: profile.linkedin, Icon: Linkedin },
-    { label: "X", href: profile.twitter, Icon: Twitter },
-    { label: "Email", href: `mailto:${profile.email}`, Icon: Mail },
-  ];
+  const icons = { email: Mail, github: Github, linkedin: Linkedin, twitter: Twitter };
 
   return (
     <footer className="border-t border-[color:var(--line)] bg-[color:var(--bg)] px-5 py-12">
@@ -33,7 +29,7 @@ export default function Footer() {
         <div>
           <h3 className="mb-4 text-sm font-semibold uppercase">Navigate</h3>
           <div className="grid gap-3 text-sm text-[color:var(--muted)]">
-            {[...navLinks, { label: "Resume", path: "/resume" }, { label: "Articles", path: "/articles" }].map(
+            {[...navLinks, { label: "Articles", path: "/articles" }].map(
               (link) => (
                 <Link key={link.path} to={link.path} className="transition hover:text-[color:var(--text)]">
                   {link.label}
@@ -50,18 +46,22 @@ export default function Footer() {
             {profile.location}, {profile.timezone}
           </div>
           <div className="flex gap-2">
-            {socials.map(({ label, href, Icon: SocialIcon }) => ( // eslint-disable-line no-unused-vars
-              <a
-                key={label}
-                href={href}
-                target={href.startsWith("http") ? "_blank" : undefined}
-                rel={href.startsWith("http") ? "noreferrer" : undefined}
-                aria-label={label}
-                className="grid h-10 w-10 place-items-center rounded-lg border border-[color:var(--line)] text-[color:var(--muted)] transition hover:border-[color:var(--accent)] hover:text-[color:var(--accent)]"
-              >
-                <SocialIcon size={17} />
-              </a>
-            ))}
+            {socialLinks.map(({ label, href, type }) => {
+              const Icon = icons[type];
+
+              return (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noreferrer" : undefined}
+                  aria-label={label}
+                  className="grid h-10 w-10 place-items-center rounded-lg border border-[color:var(--line)] text-[color:var(--muted)] transition hover:border-[color:var(--accent)] hover:text-[color:var(--accent)]"
+                >
+                  {createElement(Icon, { size: 17 })}
+                </a>
+              );
+            })}
           </div>
         </div>
       </div>

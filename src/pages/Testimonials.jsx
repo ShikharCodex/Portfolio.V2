@@ -31,7 +31,7 @@ export default function Testimonials() {
         </div>
       </section>
 
-      <section className="section-pad bg-[color:var(--surface)]">
+      <section className="section-pad surface-band">
         <div className="container-xl grid gap-5 md:grid-cols-3">
           {[
             ["Clarity", "Ambiguous ideas become scoped screens, flows, APIs, and tradeoffs."],

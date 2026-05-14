@@ -1,33 +1,29 @@
 import { useCallback, useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
 const MotionDiv = motion.div;
 
+const interactiveSelector = "a, button, [role='button'], summary, [data-cursor='grow']";
+const textSelector = "input, textarea, select, [contenteditable='true']";
+
 export default function CursorAura() {
   const [visible, setVisible] = useState(false);
-  const [hovering, setHovering] = useState(false);
+  const [active, setActive] = useState(false);
+  const [typing, setTyping] = useState(false);
 
-  // Main cursor position (fast, precise)
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
-  const springX = useSpring(cursorX, { stiffness: 600, damping: 40, mass: 0.15 });
-  const springY = useSpring(cursorY, { stiffness: 600, damping: 40, mass: 0.15 });
+  const ringX = useSpring(cursorX, { stiffness: 420, damping: 32, mass: 0.18 });
+  const ringY = useSpring(cursorY, { stiffness: 420, damping: 32, mass: 0.18 });
+  const glowX = useSpring(cursorX, { stiffness: 95, damping: 24, mass: 0.4 });
+  const glowY = useSpring(cursorY, { stiffness: 95, damping: 24, mass: 0.4 });
 
-  // Outer ring (slower, laggy follow for organic feel)
-  const ringX = useSpring(cursorX, { stiffness: 120, damping: 26, mass: 0.4 });
-  const ringY = useSpring(cursorY, { stiffness: 120, damping: 26, mass: 0.4 });
-
-  // Scale up on hovering interactive elements
-  const ringScale = useSpring(hovering ? 1.8 : 1, { stiffness: 300, damping: 22 });
-  const dotScale = useSpring(hovering ? 0.5 : 1, { stiffness: 300, damping: 22 });
-
-  // Rotation based on horizontal velocity for a dynamic feel
-  const rotate = useTransform(springX, (latest) => (latest % 360) * 0.15);
-
-  const checkHover = useCallback((target) => {
-    if (!target) return false;
-    const el = target.closest("a, button, [role='button'], input, select, textarea, [data-cursor='grow']");
-    return Boolean(el);
+  const readTarget = useCallback((target) => {
+    if (!target?.closest) return { nextActive: false, nextTyping: false };
+    return {
+      nextActive: Boolean(target.closest(interactiveSelector)),
+      nextTyping: Boolean(target.closest(textSelector)),
+    };
   }, []);
 
   useEffect(() => {
@@ -38,7 +34,10 @@ export default function CursorAura() {
       cursorX.set(event.clientX);
       cursorY.set(event.clientY);
       setVisible(true);
-      setHovering(checkHover(event.target));
+
+      const { nextActive, nextTyping } = readTarget(event.target);
+      setActive(nextActive);
+      setTyping(nextTyping);
     };
 
     const leave = () => setVisible(false);
@@ -50,55 +49,27 @@ export default function CursorAura() {
       window.removeEventListener("mousemove", move);
       window.removeEventListener("mouseleave", leave);
     };
-  }, [cursorX, cursorY, checkHover]);
+  }, [cursorX, cursorY, readTarget]);
 
-  if (!visible) return null;
+  if (!visible || typing) return null;
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[90] hidden md:block">
-      {/* Outer crosshair frame — slow follow with subtle rotation */}
       <MotionDiv
-        style={{
-          x: ringX,
-          y: ringY,
-          scale: ringScale,
-          rotate,
-        }}
-        className="absolute -left-5 -top-5 h-10 w-10"
-      >
-        {/* Crosshair lines */}
-        <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-[color:var(--accent)] to-transparent opacity-50" />
-        <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-gradient-to-r from-transparent via-[color:var(--accent)] to-transparent opacity-50" />
-
-        {/* Corner brackets */}
-        <span className="absolute left-0 top-0 h-2.5 w-2.5 border-l-2 border-t-2 border-[color:var(--accent)] opacity-70" />
-        <span className="absolute right-0 top-0 h-2.5 w-2.5 border-r-2 border-t-2 border-[color:var(--accent)] opacity-70" />
-        <span className="absolute bottom-0 left-0 h-2.5 w-2.5 border-b-2 border-l-2 border-[color:var(--accent)] opacity-70" />
-        <span className="absolute bottom-0 right-0 h-2.5 w-2.5 border-b-2 border-r-2 border-[color:var(--accent)] opacity-70" />
-      </MotionDiv>
-
-      {/* Glow halo — soft ambient light behind cursor */}
-      <MotionDiv
-        style={{
-          x: ringX,
-          y: ringY,
-          scale: ringScale,
-          background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)",
-        }}
-        className="absolute -left-16 -top-16 h-32 w-32 rounded-full opacity-[0.12] blur-2xl"
+        style={{ x: glowX, y: glowY }}
+        animate={{ opacity: active ? 0.18 : 0.08, scale: active ? 1.2 : 1 }}
+        className="absolute -left-16 -top-16 h-32 w-32 rounded-full bg-[color:var(--accent)] blur-2xl"
       />
-
-      {/* Center dot — fast, precise tracking */}
       <MotionDiv
-        style={{
-          x: springX,
-          y: springY,
-          scale: dotScale,
+        style={{ x: ringX, y: ringY }}
+        animate={{
+          height: active ? 46 : 30,
+          opacity: active ? 0.95 : 0.45,
+          width: active ? 46 : 30,
         }}
-        className="absolute -left-1 -top-1 h-2 w-2 rounded-full bg-[color:var(--accent)]"
-      >
-        <span className="absolute inset-0 animate-ping rounded-full bg-[color:var(--accent)] opacity-30" />
-      </MotionDiv>
+        transition={{ type: "spring", stiffness: 360, damping: 26 }}
+        className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-[color:var(--accent)]"
+      />
     </div>
   );
 }

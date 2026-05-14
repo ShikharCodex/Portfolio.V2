@@ -42,7 +42,7 @@ export default function Projects() {
                 className={[
                   "rounded-lg px-4 py-2 text-sm font-semibold transition",
                   filter === item
-                    ? "bg-[color:var(--text)] text-[#07100b]"
+                    ? "button-primary"
                     : "text-[color:var(--muted)] hover:bg-[color:var(--surface-strong)] hover:text-[color:var(--text)]",
                 ].join(" ")}
               >

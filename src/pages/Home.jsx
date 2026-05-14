@@ -1,17 +1,22 @@
 import { createElement, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import gsap from "gsap";
+import { Link } from "react-router-dom";
 import {
   ArrowDown,
+  ArrowUpRight,
   BadgeCheck,
   Braces,
   Code2,
   Github,
   Linkedin,
+  Mail,
+  Rocket,
+  ShieldCheck,
   Sparkles,
   Twitter,
+  Workflow,
 } from "lucide-react";
-import LiquidMetalScene from "../components/LiquidMetalScene";
 import HeroScene from "../components/HeroScene";
 import MagneticButton from "../components/MagneticButton";
 import ProjectCard from "../components/ProjectCard";
@@ -25,12 +30,14 @@ import {
   roles,
   services,
   skillGroups,
+  socialLinks,
   stack,
   stats,
   testimonials,
 } from "../data/portfolio";
 
 const MotionSpan = motion.span;
+const socialIcons = { email: Mail, github: Github, linkedin: Linkedin, twitter: Twitter };
 
 function RoleTicker() {
   const [index, setIndex] = useState(0);
@@ -59,6 +66,78 @@ function RoleTicker() {
   );
 }
 
+function HeroCommandCenter() {
+  const featured = projects.slice(0, 4);
+  const pipeline = [
+    { icon: Workflow, label: "Product flow", value: "Research -> UI -> API -> deploy" },
+    { icon: ShieldCheck, label: "Reliability", value: "Validation, limits, fallback states" },
+    { icon: Rocket, label: "Launch", value: "Vercel, Render, SEO, performance pass" },
+  ];
+
+  return (
+    <div className="hero-stage hero-reveal relative rounded-lg p-4 md:p-6">
+      <div className="relative z-10 flex items-start justify-between gap-5 border-b border-[color:var(--line)] pb-5">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[color:var(--accent)]">
+            Portfolio operating system
+          </p>
+          <h2 className="mt-3 text-2xl font-bold text-[color:var(--text)] md:text-3xl">
+            Proof, process, and product depth in one view.
+          </h2>
+        </div>
+        <span className="rounded-lg border border-[color:var(--line)] px-3 py-2 text-xs font-semibold text-[color:var(--muted)]">
+          2026
+        </span>
+      </div>
+
+      <div className="relative z-10 mt-6 grid gap-4">
+        <div className="grid gap-3 sm:grid-cols-2">
+          {featured.map((project) => (
+            <Link
+              key={project.slug}
+              to={`/projects/${project.slug}`}
+              className="group rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] p-4 transition hover:-translate-y-1 hover:border-[color:var(--accent)]"
+            >
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <span className="text-xs font-bold uppercase tracking-[0.14em]" style={{ color: project.accent }}>
+                  {project.type}
+                </span>
+                <ArrowUpRight size={16} className="text-[color:var(--muted)] transition group-hover:text-[color:var(--text)]" />
+              </div>
+              <h3 className="text-lg font-bold">{project.name}</h3>
+              <p className="mt-2 line-clamp-2 text-sm leading-6 text-[color:var(--muted)]">
+                {project.summary}
+              </p>
+            </Link>
+          ))}
+        </div>
+
+        <div className="rounded-lg border border-[color:var(--line)] bg-[color:var(--panel)] p-4">
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-[color:var(--accent-2)]">
+              Build pipeline
+            </p>
+            <span className="hero-line h-px w-20 rounded-full" />
+          </div>
+          <div className="grid gap-3">
+            {pipeline.map(({ icon: Icon, label, value }) => (
+              <div key={label} className="flex items-center gap-3 rounded-lg border border-[color:var(--line)] bg-[color:var(--bg)] p-3">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-[color:var(--surface-strong)] text-[color:var(--accent)]">
+                  {createElement(Icon, { size: 17 })}
+                </span>
+                <span>
+                  <span className="block text-sm font-semibold">{label}</span>
+                  <span className="block text-xs leading-5 text-[color:var(--muted)]">{value}</span>
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function HomeHero() {
   const heroRef = useRef(null);
 
@@ -69,11 +148,10 @@ function HomeHero() {
     const context = gsap.context(() => {
       gsap.fromTo(
         ".hero-reveal",
-        { y: 42, opacity: 0, filter: "blur(10px)" },
+        { y: 34, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          filter: "blur(0px)",
           duration: 0.9,
           stagger: 0.08,
           ease: "power3.out",
@@ -85,77 +163,82 @@ function HomeHero() {
   }, []);
 
   return (
-    <section ref={heroRef} className="relative min-h-screen overflow-hidden px-5 pt-32">
-      <video
-        className="absolute inset-0 h-full w-full object-cover opacity-20"
-        autoPlay
-        muted
-        loop
-        playsInline
-        src="/bg.mp4"
-      />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,8,6,0.42),var(--bg)_86%)]" />
-      {/* <HeroScene /> */}
+    <section ref={heroRef} className="hero-shell relative min-h-screen overflow-hidden px-5 pt-32">
+      <HeroScene />
+      <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[color:var(--bg)]" />
 
-      <div className="relative z-10 mx-auto grid min-h-[calc(100vh-8rem)] w-full max-w-[calc(100vw-40px)] min-w-0 items-center gap-10 py-10 lg:max-w-7xl lg:grid-cols-[1.08fr_0.92fr]">
+      <div className="relative z-10 mx-auto grid min-h-[calc(100vh-8rem)] w-full max-w-[calc(100vw-40px)] min-w-0 items-center gap-12 py-10 lg:max-w-7xl lg:grid-cols-[0.92fr_1.08fr]">
         <div className="min-w-0 max-w-full">
           <div className="hero-reveal mb-6 flex flex-wrap items-center gap-3">
+            <span className="hero-line h-px w-12 rounded-full" />
             <RoleTicker />
-            <span className="inline-flex min-h-9 items-center rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] px-3 text-sm text-[color:var(--muted)]">
-              Based in {profile.location}
+            <span className="inline-flex min-h-9 items-center rounded-lg border border-[color:var(--line)] bg-[color:var(--panel)] px-3 text-sm text-[color:var(--muted)]">
+              {profile.location} / {profile.timezone}
             </span>
           </div>
 
-          <h1 className="hero-reveal max-w-full break-words text-4xl font-semibold leading-tight text-[color:var(--text)] sm:max-w-5xl sm:text-5xl md:text-7xl">
-            {profile.name} builds digital products with calm interfaces and serious engineering.
+          <p className="hero-reveal mb-4 text-xs font-bold uppercase tracking-[0.2em] text-[color:var(--accent)]">
+            Full-stack product engineer
+          </p>
+
+          <h1 className="hero-reveal max-w-full break-words text-4xl font-bold leading-tight text-[color:var(--text)] sm:max-w-4xl sm:text-5xl xl:text-5xl 2xl:text-6xl">
+            Premium web products, shipped with serious engineering.
           </h1>
 
-          <p className="hero-reveal mt-6 max-w-[20rem] text-base leading-8 text-[color:var(--muted)] sm:max-w-full md:max-w-2xl md:text-xl">
+          <p className="hero-reveal mt-6 max-w-[39rem] text-base leading-8 text-[color:var(--muted)] md:text-xl">
             {profile.subline}
           </p>
 
           <div className="hero-reveal mt-8 flex flex-wrap gap-3">
             <MagneticButton to="/projects">Explore work</MagneticButton>
-            <MagneticButton href={profile.resume} download icon="download" variant="secondary">
-              Download resume
+            <MagneticButton href={`mailto:${profile.email}`} icon="arrow" variant="secondary">
+              Email me
             </MagneticButton>
           </div>
 
-          <div className="hero-reveal mt-8 flex items-center gap-3">
-            {[
-              { href: profile.github, label: "GitHub", icon: Github },
-              { href: profile.linkedin, label: "LinkedIn", icon: Linkedin },
-              { href: profile.twitter, label: "X", icon: Twitter },
-            ].map(({ href, label, icon: Icon }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={label}
-                className="grid h-11 w-11 place-items-center rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] text-[color:var(--muted)] transition hover:border-[color:var(--accent)] hover:text-[color:var(--text)]"
-              >
-                {createElement(Icon, { size: 18 })}
-              </a>
-            ))}
-          </div>
-        </div>
+          <div className="hero-reveal mt-7 flex flex-wrap items-center gap-3">
+            {socialLinks.map(({ href, label, type }) => {
+              const Icon = socialIcons[type];
 
-        <div className="hero-reveal relative min-w-0 max-w-full">
-          <div className="relative mx-auto h-[400px] w-full max-w-md md:h-[500px]">
-            <LiquidMetalScene />
+              return (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noreferrer" : undefined}
+                  aria-label={label}
+                  className="grid h-11 w-11 place-items-center rounded-lg border border-[color:var(--line)] bg-[color:var(--panel)] text-[color:var(--muted)] transition hover:border-[color:var(--accent)] hover:text-[color:var(--text)]"
+                >
+                  {createElement(Icon, { size: 18 })}
+                </a>
+              );
+            })}
           </div>
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+
+          <div className="hero-reveal mt-8 grid max-w-2xl gap-3 sm:grid-cols-3">
             {[
-              ["Currently building", "AI interfaces with safer product boundaries"],
-              ["Learning", "System design, evaluation loops, and better motion craft"],
+              ["Mode", "Build, measure, polish"],
+              ["Focus", "React, AI, backend"],
+              ["Status", "Open to serious builds"],
             ].map(([label, value]) => (
-              <div key={label} className="rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] p-4">
-                <p className="text-xs font-semibold uppercase text-[color:var(--accent)]">{label}</p>
+              <div key={label} className="rounded-lg border border-[color:var(--line)] bg-[color:var(--panel)] p-4">
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[color:var(--accent)]">{label}</p>
                 <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">{value}</p>
               </div>
             ))}
           </div>
+        </div>
+
+        <HeroCommandCenter />
+      </div>
+
+      <div className="relative z-10 mx-auto -mt-8 hidden max-w-7xl border-t border-[color:var(--line)] py-4 lg:block">
+        <div className="marquee flex w-max gap-3 text-xs font-bold uppercase tracking-[0.18em] text-[color:var(--muted)]">
+          {[...stack.slice(0, 9), ...stack.slice(0, 9)].map((item, index) => (
+            <span key={`${item}-${index}`} className="rounded-lg border border-[color:var(--line)] px-3 py-2">
+              {item}
+            </span>
+          ))}
         </div>
       </div>
 
@@ -176,8 +259,8 @@ function StatsSection() {
     <section className="px-5 py-10">
       <div className="mx-auto grid max-w-7xl gap-3 md:grid-cols-4">
         {stats.map((stat) => (
-          <Reveal key={stat.label} className="rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] p-5">
-            <div className="text-3xl font-semibold text-[color:var(--text)]">{stat.value}</div>
+          <Reveal key={stat.label} className="solid-panel rounded-lg p-5">
+            <div className="text-3xl font-bold text-[color:var(--text)]">{stat.value}</div>
             <div className="mt-2 text-sm text-[color:var(--muted)]">{stat.label}</div>
           </Reveal>
         ))}
@@ -213,7 +296,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-pad bg-[color:var(--surface)]">
+      <section className="section-pad surface-band">
         <div className="container-xl">
           <SectionHeader
             eyebrow="Engineering range"
@@ -260,7 +343,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-pad bg-[color:var(--surface)]">
+      <section className="section-pad surface-band">
         <div className="container-xl">
           <SectionHeader
             eyebrow="Services"
@@ -313,17 +396,34 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="px-5 pb-24">
+      <section id="connect" className="px-5 pb-24">
         <Reveal className="mx-auto max-w-7xl rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] p-6 premium-shadow md:p-10">
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
-              <p className="mb-3 text-sm font-semibold uppercase text-[color:var(--accent)]">Availability</p>
-              <h2 className="text-3xl font-semibold md:text-5xl">Have a serious build in mind?</h2>
+              <p className="mb-3 text-sm font-semibold uppercase text-[color:var(--accent)]">Connect</p>
+              <h2 className="text-3xl font-semibold md:text-5xl">No form. Just the fastest useful links.</h2>
               <p className="mt-4 max-w-2xl text-base leading-8 text-[color:var(--muted)]">
                 {profile.availability}
               </p>
             </div>
-            <MagneticButton to="/contact">Open a conversation</MagneticButton>
+            <div className="flex flex-wrap gap-3">
+              {socialLinks.map(({ href, label, type }) => {
+                const Icon = socialIcons[type];
+
+                return (
+                  <a
+                    key={label}
+                    href={href}
+                    target={href.startsWith("http") ? "_blank" : undefined}
+                    rel={href.startsWith("http") ? "noreferrer" : undefined}
+                    className="inline-flex min-h-12 items-center justify-center gap-3 rounded-lg border border-[color:var(--line)] px-4 text-sm font-semibold text-[color:var(--muted)] transition hover:border-[color:var(--accent)] hover:text-[color:var(--text)]"
+                  >
+                    {createElement(Icon, { size: 17 })}
+                    {label}
+                  </a>
+                );
+              })}
+            </div>
           </div>
         </Reveal>
       </section>

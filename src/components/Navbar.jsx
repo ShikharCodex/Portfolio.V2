@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { createElement, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, Terminal, X } from "lucide-react";
+import { Github, Linkedin, Mail, Menu, Terminal, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
-import { navLinks, profile } from "../data/portfolio";
+import { navLinks, profile, socialLinks } from "../data/portfolio";
 import MagneticButton from "./MagneticButton";
 import ThemeToggle from "./ThemeToggle";
 
 const MotionNav = motion.nav;
 const MotionDiv = motion.div;
+const icons = { github: Github, linkedin: Linkedin, email: Mail };
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -68,8 +69,26 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-2 lg:flex">
           <ThemeToggle />
-          <MagneticButton to="/contact" className="min-h-10 px-4 py-2">
-            Start a project
+          {socialLinks
+            .filter((link) => ["github", "linkedin"].includes(link.type))
+            .map((link) => {
+              const Icon = icons[link.type];
+
+              return (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={link.label}
+                  className="grid h-10 w-10 place-items-center rounded-lg border border-[color:var(--line)] text-[color:var(--muted)] transition hover:border-[color:var(--accent)] hover:text-[color:var(--text)]"
+                >
+                  {createElement(Icon, { size: 17 })}
+                </a>
+              );
+            })}
+          <MagneticButton href={`mailto:${profile.email}`} className="min-h-10 px-4 py-2">
+            Email me
           </MagneticButton>
         </div>
 
@@ -105,16 +124,30 @@ export default function Navbar() {
                   {link.label}
                 </NavLink>
               ))}
-              <NavLink
-                to="/resume"
-                className={linkClass}
-                onClick={() => setOpen(false)}
-              >
-                Resume
-              </NavLink>
               <div className="mt-2 flex items-center justify-between rounded-lg border border-[color:var(--line)] px-3 py-2">
                 <span className="text-sm font-medium text-[color:var(--muted)]">Theme</span>
                 <ThemeToggle />
+              </div>
+              <div className="mt-2 grid grid-cols-3 gap-2">
+                {socialLinks
+                  .filter((link) => ["github", "linkedin", "email"].includes(link.type))
+                  .map((link) => {
+                    const Icon = icons[link.type];
+
+                    return (
+                      <a
+                        key={link.label}
+                        href={link.href}
+                        target={link.href.startsWith("http") ? "_blank" : undefined}
+                        rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+                        aria-label={link.label}
+                        className="grid h-11 place-items-center rounded-lg border border-[color:var(--line)] text-[color:var(--muted)]"
+                        onClick={() => setOpen(false)}
+                      >
+                        {createElement(Icon, { size: 18 })}
+                      </a>
+                    );
+                  })}
               </div>
             </div>
           </MotionDiv>

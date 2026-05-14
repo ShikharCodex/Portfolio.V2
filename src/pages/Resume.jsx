@@ -38,7 +38,7 @@ export default function Resume() {
         </div>
       </section>
 
-      <section className="section-pad bg-[color:var(--surface)]">
+      <section className="section-pad surface-band">
         <div className="container-xl grid gap-8 md:grid-cols-2">
           <div>
             <SectionHeader eyebrow="Core strengths" title="What I bring." />
@@ -74,7 +74,7 @@ export default function Resume() {
           <a
             href={profile.resume}
             download
-            className="inline-flex min-h-12 items-center justify-center gap-3 rounded-lg bg-[color:var(--text)] px-5 py-3 text-sm font-semibold text-[#07100b] transition hover:bg-[color:var(--accent)]"
+            className="button-primary inline-flex min-h-12 items-center justify-center gap-3 rounded-lg px-5 py-3 text-sm font-semibold transition"
           >
             Download <Download size={17} />
           </a>

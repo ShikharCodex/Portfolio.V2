@@ -12,7 +12,6 @@ const Services = lazy(() => import("./pages/Services"));
 const Testimonials = lazy(() => import("./pages/Testimonials"));
 const Resume = lazy(() => import("./pages/Resume"));
 const Blog = lazy(() => import("./pages/Blog"));
-const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 function PageFallback() {
@@ -40,7 +39,7 @@ export default function App() {
             <Route path="resume" element={<Resume />} />
             <Route path="articles" element={<Blog />} />
             <Route path="blog" element={<Navigate to="/articles" replace />} />
-            <Route path="contact" element={<Contact />} />
+            <Route path="contact" element={<Navigate to="/#connect" replace />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

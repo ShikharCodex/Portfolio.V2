@@ -36,8 +36,7 @@ export default function MagneticButton({
   const base =
     "group inline-flex min-h-12 items-center justify-center gap-3 rounded-lg px-5 py-3 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--accent)] focus:ring-offset-2 focus:ring-offset-[color:var(--bg)]";
   const variants = {
-    primary:
-      "bg-[color:var(--text)] text-[#07100b] hover:bg-[color:var(--accent)]",
+    primary: "button-primary",
     secondary:
       "hairline bg-[color:var(--surface)] text-[color:var(--text)] hover:border-[color:var(--accent)] hover:text-[color:var(--accent)]",
     ghost:

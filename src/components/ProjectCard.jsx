@@ -8,7 +8,7 @@ export default function ProjectCard({ project, featured = false }) {
   return (
     <Reveal
       className={[
-        "grid gap-6 rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] p-4 premium-shadow md:p-5",
+        "group grid gap-6 rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] p-4 premium-shadow transition duration-300 hover:-translate-y-1 hover:border-[color:var(--accent)] md:p-5",
         featured ? "lg:grid-cols-[0.95fr_1.05fr] lg:items-center" : "",
       ].join(" ")}
     >
@@ -19,6 +19,9 @@ export default function ProjectCard({ project, featured = false }) {
             <span style={{ color: project.accent }}>{project.type}</span>
             <span className="h-1 w-1 rounded-full bg-[color:var(--muted)]" />
             <span>{project.year}</span>
+            <span className="rounded-md border border-[color:var(--line)] px-2 py-1 text-[10px]" style={{ color: project.accent }}>
+              {project.status}
+            </span>
           </div>
           <h3 className="text-2xl font-semibold md:text-3xl">{project.name}</h3>
           <p className="mt-4 text-sm leading-7 text-[color:var(--muted)] md:text-base">

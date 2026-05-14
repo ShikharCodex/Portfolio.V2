@@ -61,7 +61,7 @@ export default function Skills() {
         </div>
       </section>
 
-      <section className="section-pad bg-[color:var(--surface)]">
+      <section className="section-pad surface-band">
         <div className="container-xl grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
           <SectionHeader
             eyebrow="Depth map"
@@ -106,7 +106,7 @@ export default function Skills() {
         </div>
       </section>
 
-      <section className="section-pad bg-[color:var(--surface)]">
+      <section className="section-pad surface-band">
         <div className="container-xl">
           <SectionHeader eyebrow="Coding profile" title="External signals and growth tracks." />
           <div className="grid gap-4 md:grid-cols-3">

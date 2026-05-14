@@ -18,11 +18,14 @@ export default function SectionHeader({
       ].join(" ")}
     >
       {eyebrow && (
-        <p className="mb-4 text-xs font-semibold uppercase text-[color:var(--accent)]">
-          {eyebrow}
-        </p>
+        <div className={["mb-4 flex items-center gap-3", centered ? "justify-center" : ""].join(" ")}>
+          <span className="hero-line h-px w-10 rounded-full" />
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-[color:var(--accent)]">
+            {eyebrow}
+          </p>
+        </div>
       )}
-      <h2 className="text-3xl font-semibold leading-tight text-[color:var(--text)] md:text-5xl">
+      <h2 className="text-3xl font-bold leading-tight text-[color:var(--text)] md:text-5xl">
         {title}
       </h2>
       {description && (
