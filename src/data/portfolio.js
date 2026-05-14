@@ -10,7 +10,7 @@ export const profile = {
   location: "Kanpur, India",
   timezone: "IST",
   email: "hello@shikharx.xyz",
-  resume: "/Shikhar-Resume.txt",
+  resume: "/Shikhar-Resume.pdf",
   github: "https://github.com/ShikharBit",
   linkedin: "https://www.linkedin.com/in/shikharx/",
   twitter: "https://x.com/ShikharByte",
